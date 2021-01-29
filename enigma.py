@@ -34,7 +34,8 @@ def creaRodillo(tipo,abecedario): #recibe como argumentos el tipo de rodillo (ro
         return (reflector) #devuelve la lista con las parejas de índices del reflector
 
     elif tipo == 'rotorRandom': #si es un rotor al azar lo creamos
-        rotor = random.shuffle(abecedarioLista) #crea el rotor haciendo un shuffle del abecedario
+        rotor = abecedarioLista.copy()
+        random.shuffle(rotor) #crea el rotor haciendo un shuffle del abecedario
         return rotor #devuelve la lista de índices del rotor
 
 def inputLetra(abecedario):
