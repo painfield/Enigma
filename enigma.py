@@ -51,7 +51,6 @@ def creaABC(): #crea abecedario
         if default.isalpha and default.upper() == 'N': #si no quiere usar el abecedario por defecto
             valid = True #pone valid a verdadero
             abcAux = input ('Introduce el abecedario: ')
-            valid = True #pone valid a verdadero
             for letra in abcAux: #recorre todas las letras del abecedario
                 if not letra.isalpha() or abcAux.count(letra) > 1: #si no es letra o la letra se repite vuelve a poner valid a falso, en otro caso se mantiene verdadero
                     valid = False
@@ -64,8 +63,8 @@ def creaABC(): #crea abecedario
 def inputMensaje(): #introducir mensaje
     valid = False
     while not valid: #mientras valid es falso
-        msg = input ('Introduce el mensaje: ')
         valid = True #pone valid a verdadero
+        msg = input ('Introduce el mensaje: ')
         for letra in msg: #recorre todas las letras del mensaje
             if not letra.isalpha() and letra != ' ' and letra != '.': #si no es letra, espacio o punto vuelve a poner valid a falso, si no se mantiene verdadero
                 valid = False
@@ -73,32 +72,31 @@ def inputMensaje(): #introducir mensaje
 
 def inicializa(rotores,abecedario): #inicializa el rotor en la letra seleccionada
     valid = False
-    rotoresAux = []
-    while not valid:
+    while not valid: #mientras valid es falso
         valid = True
-        for rotor in rotores:
+        for rotorNum,rotor in enumerate(rotores):
             letra = input('Introduce una letra para establecer la posición inicial del rotor: ')
             if len(letra) == 1 and letra.isalpha() and letra.upper() in abecedario: #si la letra de inicialización es válida y se encuentra en abecedario devolverla
                 pos = rotor.index(letra.upper()) #posición de la letra en el rotor
-                rotoresAux.append(rotor[pos:] + rotor[:pos]) #ponemos el rotor a 0 a la altura de la letra inicial y lo añadimos a la lista auxiliar
+                rotores[rotorNum] = (rotor[pos:] + rotor[:pos]) #ponemos el rotor a 0 a la altura de la letra inicial y lo añadimos a la lista auxiliar
             else:
                 valid = False
-    return rotoresAux
+    return rotores
 
-def avanza(rotores,pasos): #avanza un paso los rotores
+def avanza(rotores,pasos): #avanza los rotores en número de pasos acumulado
     caracteres = len(rotores[0]) #asigna el número de caracteres del rotor a la variable
     for rotorNum,rotor in enumerate(rotores): #mueve los rotores un número de pasos que depende del punto del mensaje en que nos encontremos
-        while pasos > 0:
-            vueltas = pasos // caracteres
-            posicion = pasos % caracteres
-            rotores[rotorNum] = rotor[pasos:] + rotor[:pasos] #coge desde la posición 2 del rotor hasta el final y le suma la primera
-            pasos = vueltas
-            print('rotor {} posicion {} pasos restantes {}'.format(rotorNum+1,posicion,pasos))
-            print(rotores[rotorNum][posicion])
+        while pasos > 0: #mientras queden pasos por recorrer
+            vueltas = pasos // caracteres #saca las vueltas recorridas
+            posicion = pasos % caracteres #calcula la posición en el rotor actual
+            rotores[rotorNum] = rotor[pasos:] + rotor[:pasos] #coge desde la posición actual del rotor hasta el final y le suma lo anterior
+            pasos = vueltas #reinicia pasos restantes para el siguiente rotor
+            print('rotor {} posicion {} pasos restantes {}'.format(rotorNum+1,posicion,pasos)) #comprobación debug
+            print(rotores[rotorNum][posicion]) #comprobación debug
     return rotores
 
 def cruzaRotores(rotores,pos,reverse=False): #avanza a través del rotor
-    if reverse:
+    if reverse: #invierte la lista de rotores si cruza en orden inverso
         rotores = reversed(list(rotores))
     for rotor in rotores:
         letra = rotor[pos] #según la posición de la letra en el avance anterior (abecedario para el 1º y último) elige la letra correspondiente en el rotor
