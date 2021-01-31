@@ -49,6 +49,7 @@ def creaABC(): #crea abecedario
         print('abecedario predeterminado =',abecedario) #muestra abecedario por defecto
         default = input('Quieres usar el diccionario predeterminado? (S/N) ')
         if default.isalpha and default.upper() == 'N': #si no quiere usar el abecedario por defecto
+            valid = True #pone valid a verdadero
             abcAux = input ('Introduce el abecedario: ')
             valid = True #pone valid a verdadero
             for letra in abcAux: #recorre todas las letras del abecedario
